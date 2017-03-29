@@ -4,18 +4,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Dictionary {
 
 	private List<String> words;
 	private List<String> parole;
-	
+	private List<String> sbagliate;
 
 	public Dictionary() {
-		
+
 		this.words = new ArrayList<>();
 		this.parole = new ArrayList<>();
+		this.sbagliate = new ArrayList<>();
 	}
 
 	public void loadDictionary(String language) {
@@ -37,8 +39,8 @@ public class Dictionary {
 				System.out.println("Errore nella lettura del file");
 			}
 		}
-		
-		if (language== "Italiano") {
+
+		if (language == "Italiano") {
 			try {
 				ArrayList<String> lines = new ArrayList<>();
 
@@ -58,15 +60,46 @@ public class Dictionary {
 
 	}
 
-	public List<RichWord> spellCheckText(List<String> inputTextList) {
+	public Collection<String> controllaParole(String[] parole, String lingua) {
 		
-		List<RichWord> risultato = new ArrayList<>();
 		
-		for (String string : inputTextList) {
+		if (lingua == "English") {
 			
+			for (String string : parole) {
+				
+				if (!words.contains(string)) {
+					
+					sbagliate.add(string);
+					
+				}
+			}
 		}
 		
-		return risultato;
+	if (lingua == "Italiano") {
+			
+			for (String string : parole) {
+				
+				if (!this.parole.contains(string)) {
+					
+					sbagliate.add(string);
+					
+				}
+			}
+		}
+		
+		return sbagliate;
+		
 	}
+
+	public int contaErrori() {
+		return sbagliate.size();
+	}
+
+	public void clearSbagliate() {
+		sbagliate.clear();
+		
+	}
+	
+	
 
 }
